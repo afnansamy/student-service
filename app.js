@@ -1,87 +1,38 @@
 const express = require('express')
-
-const { sequelize, Student } = require('./models')
+require('dotenv').config();
+const { sequelize } = require('./models');
+const studentRoutes = require('./routes/students');
 
 const app = express()
 app.use(express.json())
 
-//CREATE STUDENT
-app.post('/students', async (req, res) => {
-    const { name, email, birthdate, phonenumber } = req.body
+const PORT = process.env.PORT || 80;
 
-    try {
-        const student = await Student.create({ name, email, birthdate, phonenumber })
-        return res.json(student)
-    } catch (err) {
-        console.log(err)
-        return res.status(500).json(err)
+
+//students routes
+app.use('/students', studentRoutes);
+
+
+//404 error
+app.use(async (req, res, next) => {
+  res.status(404).send("404. Not Found");
+});
+
+//other errors handler
+app.use((err, req, res, next) => {
+  res.status(err.status || 500)
+  res.send({
+    error: {
+      status: err.status || 500,
+      message: err.message,
     }
-})
+  });
+});
 
-//READ STUDENT
-app.get('/students', async (req, res) => {
-    try {
-        const students = await Student.findAll()
-        return res.json(students)
-    } catch (err) {
-        console.log(err)
-        return res.status(500).json({ error: 'something went WRONG'})
-    }
-})
-
-//FIND ONE STUDENT
-app.get('/students/:uuid', async (req, res) => {
-    const uuid = req.params.uuid
-    try {
-        const students = await Student.findOne({
-            where: { uuid }
-        })
-        return res.json(students)
-    } catch (err) {
-        console.log(err)
-        return res.status(500).json({ error: 'something went WRONG' })
-    }
-})
-
-//DELETE STUDENT
-app.delete('/students/:uuid', async (req, res) => {
-    const uuid = req.params.uuid
-    try {
-        const student = await Student.findOne({ where: { uuid } })
-        await student.destroy()
-
-        return res.json({ message: 'STUDENT DELETED' })
-    } catch (err) {
-        console.log(err)
-        return res.status(500).json({ error: 'SOMTHING WENT WRONG' })
-    }
-})
-
-//UPDATE STUDENT
-app.put('/students/:uuid', async (req, res) => {
-    const uuid = req.params.uuid
-    const { name, email, birthdate, phonenumber } = req.body
-    
-    try {
-        const student = await Student.findOne({ where: { uuid } })
-
-        student.name = name
-        student.email = email
-        student.birthdate = birthdate
-        student.phonenumber = phonenumber
-
-        await student.update()
-
-        return res.json(student)
-
-    } catch (err) {
-        console.log(err)
-        return res.status(500).json({ error: 'SOMTHING went WRONG' })
-    }
-})
-
-app.listen({ port: 5000 }, async () => {
-    console.log('Server up on http://localhost:5000')
+app.listen(PORT, async () => {
+    console.log(`Server up on http://localhost:${PORT}`)
     await sequelize.authenticate()
+    //sync is a function to rebuild tables
+    //await sequelize.sync({force: true})
     console.log('Database Connected')
-})
+});
