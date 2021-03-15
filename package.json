@@ -1,0 +1,24 @@
+{
+  "name": "student-service",
+  "version": "1.0.0",
+  "main": "app.js",
+  "repository": "https://github.com/omar-ehab/student-service.git",
+  "author": "",
+  "license": "MIT",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "crypto": "^1.0.1",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "joi": "^17.4.0",
+    "mysql2": "^2.2.5",
+    "pg": "^8.5.1",
+    "sequelize": "^6.5.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}

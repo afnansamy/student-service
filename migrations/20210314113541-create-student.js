@@ -2,39 +2,44 @@
 module.exports = {
     up: async (queryInterface, DataTypes) => {
     await queryInterface.createTable('students', {
-        id: {
+      card_id: {
+        type: DataTypes.STRING,
         allowNull: false,
-        autoIncrement: true,
+        unique: true,
         primaryKey: true,
-            type: DataTypes.INTEGER
-        },
-        uuid: {
-            type: DataTypes.UUID,
-            defaultValue: DataTypes.UUIDV4
-        },
+      },
       name: {
-          type: DataTypes.STRING,
-          allowNull: false,
+        type: DataTypes.STRING,
+        allowNull: false,
       },
       email: {
-          type: DataTypes.STRING,
-          allowNull: false,
+        type: DataTypes.STRING,
+        allowNull: true,
+        unique: true,
       },
-      birthdate: {
-          type: DataTypes.DATE,
-          allowNull: false,
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false,
       },
-      phonenumber: {
-          type: DataTypes.INTEGER,
-          allowNull: false,
+      birth_date: {
+        type: DataTypes.DATE,
+        allowNull: false,
+      },
+      student_phone_number: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      parent_phone_number: {
+        type: DataTypes.STRING,
+        allowNull: false,
       },
       createdAt: {
         allowNull: false,
-          type: DataTypes.DATE
+        type: DataTypes.DATE
       },
       updatedAt: {
         allowNull: false,
-          type: DataTypes.DATE
+        type: DataTypes.DATE
       }
     });
   },
