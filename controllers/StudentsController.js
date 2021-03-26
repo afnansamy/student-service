@@ -48,6 +48,21 @@ const show = async (req, res) => {
   }
 }
 
+const findByEmail = async (req, res) => {
+  const email = req.params.email;
+  try {
+      const student = await Student.findOne({
+          where: { email }
+      });
+      return res.json({
+        success: true,
+        student
+      });
+  } catch (err) {
+    return res.status(500).json({ error: process.env.APP_ENV === 'local' ? err : "Something went wrong"});
+  }
+}
+
 const update = async (req, res) => {
   const card_id = req.params.card_id
   const { name, email, birth_date, student_phone_number, parent_phone_number } = req.body
