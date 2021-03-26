@@ -48,15 +48,7 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     tableName: 'students',
     modelName: 'Student',
-    defaultScope: {
-      attributes: { exclude: ['password'] }
-    },
-    hooks: {
-      beforeCreate: (student) => {
-        const salt = bcrypt.genSaltSync();
-        student.password = bcrypt.hashSync(student.password, salt);
-      }
-    }
+    
   });
   
   return Student;
