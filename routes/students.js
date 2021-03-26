@@ -7,6 +7,8 @@ router.get('/', StudentsController.index);
 router.post('/', StudentsController.store)
 //FIND ONE STUDENT BY CARD ID
 router.get('/:card_id', StudentsController.show);
+//FIND ONE STUDENT BY EMAIL
+router.get('/:email/find_by_email', StudentsController.findByEmail);
 //UPDATE STUDENT
 router.put('/:card_id/update', StudentsController.update);
 //DELETE STUDENT
